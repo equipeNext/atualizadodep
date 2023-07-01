@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/CSS-RELATORIO/Relatorio.css">
+    <title>Diario</title>
+</head>
+
+<body>
+
+    <div class="header">
+        Relatório Diário e Mensal
+    </div>
+    <h2>Relatório Diário</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Quantidade de tijolos</th>
+                <th>Estoque</th>
+                <th>Danificados</th>
+            </tr>
+        </thead>
+        <tbody id="diarioTableBody">
+        </tbody>
+    </table>
+    <h2>Relatório Mensal</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Mês</th>
+                <th>Quantidade de tijolos</th>
+                <th>Estoque</th>
+                <th>Danificados</th>
+            </tr>
+        </thead>
+        <tbody id="mensalTableBody">
+        </tbody>
+    </table>
+    <h2 class="segundo">Adicionar Dados</h2>
+    <div class="card">
+        <form id="dadosForm">
+            <label for="dataInput">Data:</label>
+            <input type="date" id="dataInput" required>
+
+            <label for="Quantia">Quantia:</label>
+            <input type="text" id="QuantiaInput" required>
+
+            <label for="Produtivo">Produtivo:</label>
+            <input type="text" id="ProdutivoInput" required>
+
+            <label for="Danificados">Danificados:</label>
+            <input type="text" id="DanificadosInput" required>
+            <button type="submit" id="btnSubmit">Adicionar</button>
+        </form>
+    </div>
+
+    <button id="downloadDiarioBtn">Baixar Relatório Diário</button>
+    <button id="downloadMensalBtn">Baixar Relatório Mensal</button>
+    <button onclick="goBack()" id="btnVoltar">Voltar</button>
+
+
+    <script>
+        const form = document.getElementById('dadosForm');
+        const diarioTableBody = document.getElementById('diarioTableBody');
+        const mensalTableBody = document.getElementById('mensalTableBody');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const data = document.getElementById('dataInput').value;
+            const hora = getCurrentTime();
+            const Quantia = document.getElementById('QuantiaInput').value;
+            const Produtivo = document.getElementById('ProdutivoInput').value;
+            const Danificado = document.getElementById('DanificadosInput').value;
+
+            const newRowDiario = document.createElement('tr');
+            newRowDiario.innerHTML = `
+            <td>${data} ${hora}</td>
+            <td>${Quantia}</td>
+            <td>${Produtivo}</td>
+            <td>${Danificado}</td>
+          `;
+            diarioTableBody.appendChild(newRowDiario);
+
+            const newRowMensal = document.createElement('tr');
+            newRowMensal.innerHTML = `
+            <td>${getMonthName(data)}</td>
+            <td>${Quantia}</td>
+            <td>${Produtivo}</td>
+            <td>${Danificado}</td>
+          `;
+            mensalTableBody.appendChild(newRowMensal);
+
+            document.getElementById('dataInput').value = '';
+            document.getElementById('QuantiaInput').value = '';
+            document.getElementById('ProdutivoInput').value = '';
+            document.getElementById('DanificadosInput').value = '';
+        });
+
+        document.getElementById('downloadDiarioBtn').addEventListener('click', function () {
+            downloadTableAsCSV(diarioTableBody, 'relatorio_diario.csv');
+        });
+
+        document.getElementById('downloadMensalBtn').addEventListener('click', function () {
+            downloadTableAsCSV(mensalTableBody, 'relatorio_mensal.csv');
+        });
+
+        function downloadTableAsCSV(tableBody, filename) {
+            const rows = Array.from(tableBody.querySelectorAll('tr'));
+            const csvContent = rows.map(row => {
+                const cells = Array.from(row.querySelectorAll('td'));
+                return cells.map(cell => cell.textContent).join(',');
+            }).join('\n');
+            const csvData = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
+
+            const link = document.createElement('a');
+            link.setAttribute('href', csvData);
+            link.setAttribute('download', filename);
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function getMonthName(dateString) {
+            const [year, month, day] = dateString.split('-');
+            const date = new Date(year, month - 1, day);
+            const options = { month: 'long', year: 'numeric' };
+            return date.toLocaleDateString('pt-BR', options);
+        }
+
+        function getCurrentTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            return `${hours}:${minutes}:${seconds}`;
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+
+
+</body>
+
+</html>
