@@ -6,9 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/CSS-CADASTRO-OP/css-CadastroOP.css">
     <title>Document</title>
+    <style>
+       
+    </style>
 </head>
 
 <body>
+    
     <div class="main">
         <h1>Cadastro de operador</h1>
         <div class="container">
@@ -38,7 +42,10 @@
                         <input required="" class="form-control" name="confirm-password" id="confirm-password"
                             type="password">
                     </div>
-                    <input type="submit" class="btn" value="Cadastrar">
+                    <div class="btn-container">
+                        <input type="submit" class="btn" value="Cadastrar">
+                        <a href="/dashboard.html"><input type="button" class="btn" value="Voltar"></a>
+                    </div>
                 </form>
             </div>
         </div>
@@ -46,7 +53,6 @@
 
     <script>
         function cadastrarOperador() {
-
             let username = document.getElementById('username').value;
             let matricula = document.getElementById('email').value;
             let cargo = document.getElementById('cargo').value;
