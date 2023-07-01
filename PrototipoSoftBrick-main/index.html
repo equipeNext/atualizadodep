@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/CSS-INDEX/style.css">
+    <title>Login Soft Brick</title>
+</head>
+
+<body>
+    <div class="background-image">
+    </div>
+    <div class="container">
+        <input id="register_toggle" type="checkbox">
+        <div class="slider">
+            <form class="form">
+                <span class="title">Login</span>
+                <div class="form_control">
+                    <input required="" class="input" type="text" id="usernameInput">
+                    <label class="label">Usuário</label>
+                </div>
+                <div class="form_control">
+                    <input required="" class="input" type="password" id="passwordInput">
+                    <label class="label">Senha</label>
+                </div>
+                <button id="loginButton">Entrar</button>
+
+                <span class="bottom_text">Não tem uma conta? <label class="switch"
+                        for="register_toggle">Inscreva-se</label></span>
+            </form>
+            <form class="form">
+                <span class="title">Cadastro</span>
+                <div class="form_control">
+                    <input required="" class="input" type="text">
+                    <label class="label">Usuário</label>
+                </div>
+                <div class="form_control">
+                    <input required="" class="input" type="email">
+                    <label class="label">E-mail</label>
+                </div>
+                <div class="form_control">
+                    <input required="" class="input" type="password">
+                    <label class="label">Senha</label>
+                </div>
+                <button id="loginCadastro">Cadastrar</button>
+
+                <span class="bottom_text">Já tem uma conta? <label class="switch"
+                        for="register_toggle">Entrar</label></span>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginButton').addEventListener('click', function (event) {
+            event.preventDefault();
+
+            const username = document.getElementById('usernameInput').value;
+            const password = document.getElementById('passwordInput').value;
+
+            if (username === 'admin' && password === 'admin') {
+                window.location.href = "dashboard.html";
+            } else {
+                alert('Usuário ou senha incorretos. Por favor, tente novamente.');
+            }
+        });
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="css/CSS-ORÇAMENTO/orcamento.css">
+    <title>Tela de Orçamento</title>
+</head>
+
+<body>
+    <div class="caixa">
+
+        <h1>Orçamento</h1>
+        <div class="informacao">
+            <label class="nome" for="item">Tipo do Tijolo: </label>
+            <input type="text" id="item" />
+        </div>
+
+        <div class="informacao">
+            <label class="nome" for="quantidade">Quantidade:</label>
+            <input type="number" id="quantidade" />
+        </div>
+
+        <div class="informacao">
+            <label class="nome" for="preco">Preço:</label>
+            <input type="number" id="preco" step="0.01" />
+        </div>
+
+        <button class="botao" onclick="adicionarItem()">Adicionar Item</button>
+
+        <h2>Itens no Orçamento:</h2>
+        <ul id="listaItens"></ul>
+
+        <div id="total"></div>
+    </div>
+    <script>
+        var orcamento = {
+            itens: [],
+            adicionarItem: function (item, quantidade, preco) {
+                var totalItem = quantidade * preco;
+                this.itens.push({ item: item, quantidade: quantidade, preco: preco, total: totalItem });
+            },
+            calcularTotal: function () {
+                var total = 0;
+                for (var i = 0; i < this.itens.length; i++) {
+                    total += this.itens[i].total;
+                }
+                return total;
+            },
+            exibirItens: function () {
+                var listaItens = document.getElementById("listaItens");
+                listaItens.innerHTML = "";
+                for (var i = 0; i < this.itens.length; i++) {
+                    var item = this.itens[i];
+                    var novoItem = document.createElement("li");
+                    novoItem.innerHTML = "Tipo do Tijolo: " + item.item + " - Quantidade: " + item.quantidade + ", Preço: " + item.preco + ", Total: " + item.total;
+                    listaItens.appendChild(novoItem);
+                }
+            },
+            exibirTotal: function () {
+                var total = this.calcularTotal();
+                var totalElement = document.getElementById("total");
+                totalElement.innerHTML = "Total do Orçamento em reais: " + total;
+            }
+        };
+
+        function adicionarItem() {
+            var item = document.getElementById("item").value;
+            var quantidade = parseInt(document.getElementById("quantidade").value);
+            var preco = parseFloat(document.getElementById("preco").value);
+
+            orcamento.adicionarItem(item, quantidade, preco);
+            orcamento.exibirItens();
+            orcamento.exibirTotal();
+
+
+            document.getElementById("item").value = "";
+            document.getElementById("quantidade").value = "";
+            document.getElementById("preco").value = "";
+        }
+    </script>
+</body>
+
+</html>
