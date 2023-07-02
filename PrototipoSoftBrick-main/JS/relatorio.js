@@ -25,10 +25,10 @@ const productionData = {
 
   let currentChart = null;
 
-  // Funções para exibir os gráficos
   function showProductionChart() {
     if (currentChart) {
       currentChart.destroy();
+      
     }
 
     const chartOptions = {
@@ -138,4 +138,4 @@ const productionData = {
   function showChart(options) {
     currentChart = new ApexCharts(document.querySelector('#chartContainer'), options);
     currentChart.render();
-  }
+  };
