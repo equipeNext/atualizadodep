@@ -110,14 +110,14 @@ h1 {
     justify-content: center;
     font-size: 18px;
     outline: none;
-    color: #ffffff;
+    color: #ffff;
+    background-color: #000000;
     margin: 30px 10px;
     border-radius: 3px;
     border: solid 2px #9694944b;
     cursor: pointer;
    
 }
-
 .result-producao {
     display: flex;
     justify-content: center;

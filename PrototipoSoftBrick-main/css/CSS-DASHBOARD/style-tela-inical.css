@@ -109,7 +109,7 @@ nav {
     flex-wrap: wrap;
     justify-content: center;
     margin: 50px auto;
-    max-width: 80%;
+    max-width: 57%;
     margin-top: 250px;
     margin-bottom: 500px;
     background-color: #f1f1f1;
@@ -121,12 +121,11 @@ a {
     text-decoration: none;
 }
 
-/* Estilos para os botões das abas */
 .tab button {
     flex: 1 1 100px;
     font-size: 20px;
     display: flex;
-    height: 250px;
+    height: 260px;
     align-items: center;
     flex-direction: column;
     background-color: inherit;

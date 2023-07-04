@@ -44,8 +44,9 @@ h1 {
     justify-content: center;
     font-weight: bold;
     outline: none;
+    background-color: black;
     font-size: 18px;
-    color: #000000;
+    color: #ffff;
     margin: 30px 10px;
     border-radius: 3px;
     border: solid 2px #9694944b;
