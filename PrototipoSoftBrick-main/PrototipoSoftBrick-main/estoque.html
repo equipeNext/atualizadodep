@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="css/estoque.css">
+
+<head>
+    <title>Gerenciamento de Estoque</title>
+</head>
+
+<body>
+    <div class="container">
+    <div class="card">
+        <div class="card-header">
+            Gerenciamento de Estoque
+        </div>
+        <div class="informacao">
+            <label class="nome" for="item">Tipo do Tijolo:</label>
+            <select id="item">
+                <option value="">Selecione o tipo do Tijolo</option>
+                <option value="Tijolo 4 furos">Tijolo 4 furos</option>
+                <option value="Tijolo 6 furos">Tijolo 6 furos</option>
+                <option value="Tijolo 8 furos">Tijolo 8 furos</option>
+            </select>
+        </div>
+        <label for="materiaInput">Matéria Prima:</label>
+        <input type="text" id="materiaInput" required>
+
+        <label for="estoqueInput">Estoque:</label>
+        <input type="number" id="estoqueInput" required>
+
+        <label for="lojaInput">Quantidade na Loja:</label>
+        <input type="number" id="lojaInput" required>
+
+        <button onclick="adicionarDados()">Adicionar Dados</button>
+        <a href="dashboard.html"><button onclick="" class="voltar">Voltar</button></a>
+        
+    </div>
+    <div class="card">
+        <div class="card-header">
+            Dados Adicionados
+        </div>
+        <table id="dadosTable">
+            <thead>
+                <tr>
+                    <th>Matéria Prima</th>
+                    <th>Tipo de Tijolos</th>
+                    <th>Estoque</th>
+                    <th>Quantidade na Loja</th>
+                </tr>
+            </thead>
+            <tbody id="dadosTableBody">
+            </tbody>
+        </table>
+    </div>
+    </div>
+    <script>
+        function adicionarDados() {
+            const materiaPrima = document.getElementById('materiaInput').value;
+            const tipoTijolos = document.getElementById('item').value;
+            const estoque = document.getElementById('estoqueInput').value;
+            const quantidadeLoja = document.getElementById('lojaInput').value;
+
+            if (materiaPrima === '' || tipoTijolos === '' || estoque === '' || quantidadeLoja === '') {
+                alert('Por favor, preencha todos os campos');
+                return;
+            }
+
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${materiaPrima}</td>
+                <td>${tipoTijolos}</td>
+                <td>${estoque}</td>
+                <td>${quantidadeLoja}</td>
+            `;
+            document.getElementById('dadosTableBody').appendChild(newRow);
+
+            document.getElementById('materiaInput').value = '';
+            document.getElementById('item').value = '';
+            document.getElementById('estoqueInput').value = '';
+            document.getElementById('lojaInput').value = '';
+        }
+    </script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link rel="stylesheet" href="css/style-producao.css">
+    <title>Produção</title>
+</head>
+<body>
+    <h1>Fabricação de Tijolos</h1>
+    <div class="card-geral">
+        <div class="machine">
+            <div class="production">Em produção</div>
+            <div class="message">Desligado</div>
+        </div>
+    </div>
+    <div class="card-btn">
+        <button id="startButton" onclick="startMachine()" style="background-color: darkgreen;">Iniciar</button>
+        <button id="stopButton" onclick="stopMachine()" style="background-color: red;">Parar</button>
+        <button id="panicButton" onclick="panic()" style="background-color: #e45503;">Pânico</button>
+        <button id="downloadButton" onclick="downloadReport()" style="color: #ffff;">Download</button> 
+        <a href="dashboard.html"><button style="color: #ffff;">
+          Voltar</button></a>
+       
+    </div> 
+        
+    <div class="result-producao">
+        <div id="productionCount">Quantidade de Tijolos Produzidos: 0</div>
+        <div id="productionSummary">
+            <h2>Produções:</h2>
+            <ul id="productionList"></ul>
+        </div>
+    </div>
+    <script src="https:unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="JS/produçao.js"></script>
+    <script>
+      function downloadReport() {
+    if (productions.length === 0) {
+        alert("Não há produções para baixar.");
+        return;
+    }
+
+    let workbook = XLSX.utils.book_new();
+    let productionData = productions.map(function(production) {
+        return {
+            "Data": production.dia + "/" + production.mes + "/" + production.ano,
+            "Hora": production.hora + ":" + production.minuto + ":" + production.segundo,
+            "Quantidade": production.quantidade
+        };
+    });
+
+    let worksheet = XLSX.utils.json_to_sheet(productionData);
+    let header = ['Produção de Tijolos'];
+    XLSX.utils.sheet_add_aoa(worksheet, [header], { origin: 'A1' });
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Produções");
+    let excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+    let blob = new Blob([excelBuffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+    let url = URL.createObjectURL(blob);
+    let downloadAnchor = document.createElement("a");
+    downloadAnchor.href = url;
+    downloadAnchor.download = "relatorio_producoes.xlsx";
+    downloadAnchor.click();
+}
+    </script>
+</body>
+</html>

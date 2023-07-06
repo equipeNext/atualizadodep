@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/orcamento.css">
+    <title>Tela de orçamento</title>
+</head>
+
+<body>
+    <div class="main">
+        <div class="caixa">
+            <h1>Orçamento</h1>
+            <div class="informacao">
+                <label class="nome" for="item">Tipo do Tijolo:</label>
+                <select id="item">
+                    <option value="">Selecione o tipo do Tijolo</option>
+                    <option value="Tijolo 4 furos">Tijolo 4 furos</option>
+                    <option value="Tijolo 6 furos">Tijolo 6 furos</option>
+                    <option value="Tijolo 8 furos">Tijolo 8 furos</option>
+                </select>
+            </div>
+
+            <div class="informacao">
+                <label class="nome" for="quantidade">Quantidade:</label>
+                <input type="number" id="quantidade" />
+            </div>
+
+            <button class="botao" id="botaoAdicionar" onclick="adicionarItem()" disabled>Adicionar Item</button>
+            <button class="botao" onclick="imprimirOrcamento()">Imprimir</button>
+            <a href="dashboard.html"><button class="botao">Voltar</button></a>
+            <h2>Itens no Orçamento:</h2>
+            <ul id="listaItens"></ul>
+
+            <div id="total"></div>
+        </div>
+    </div>
+
+    <script>
+        let orcamento = {
+            itens: [],
+            adicionarItem: function (item, quantidade, preco) {
+                let totalItem = quantidade * preco;
+                this.itens.push({ item: item, quantidade: quantidade, preco: preco, total: totalItem });
+            },
+            formatarValor: function (valor) {
+                let valorFormatado = valor.toFixed(2).replace('.', ',');
+                valorFormatado = valorFormatado.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+                return 'R$ ' + valorFormatado;
+            },
+
+            formatarQuantidade: function (quantidade) {
+                let quantidadeFormatada = quantidade.toFixed(0).replace('.', '.');
+                quantidadeFormatada = quantidadeFormatada.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+                return quantidadeFormatada;
+            },
+            calcularTotal: function () {
+                let total = 0;
+                for (let i = 0; i < this.itens.length; i++) {
+                    total += this.itens[i].total;
+                }
+                return total;
+            },
+            exibirItens: function () {
+                let listaItens = document.getElementById("listaItens");
+                listaItens.innerHTML = "";
+                for (let i = 0; i < this.itens.length; i++) {
+                    let item = this.itens[i];
+                    let novoItem = document.createElement("li");
+                    novoItem.innerHTML = "Tipo do Tijolo: " + item.item + " - Quantidade: " + item.quantidade + " Preço: " + orcamento.formatarValor(item.preco) + ", Total: " + orcamento.formatarValor(item.total);
+
+
+                    listaItens.appendChild(novoItem);
+                }
+            },
+            exibirTotal: function () {
+                let total = this.calcularTotal();
+                let totalElement = document.getElementById("total");
+                totalElement.innerHTML = "Total do Orçamento em reais: " + orcamento.formatarValor(total);
+            }
+        };
+
+        function adicionarItem() {
+            let item = document.getElementById("item").value;
+            let quantidade = parseFloat(document.getElementById("quantidade").value.replace(".", ","));
+            let preco;
+
+            if (item === "Tijolo 4 furos") {
+                preco = 2;
+            } else if (item === "Tijolo 6 furos") {
+                preco = 3;
+            } else if (item === "Tijolo 8 furos") {
+                preco = 4;
+            }
+
+            orcamento.adicionarItem(item, quantidade, preco);
+            orcamento.exibirItens();
+            orcamento.exibirTotal();
+
+            document.getElementById("item").value = "";
+            document.getElementById("quantidade").value = "";
+
+            document.getElementById("botaoAdicionar").disabled = true;
+        }
+
+        document.getElementById("item").addEventListener("change", function () {
+            document.getElementById("botaoAdicionar").disabled = false;
+        });
+        function imprimirOrcamento() {
+            if (orcamento.itens.length === 0) {
+                alert("Nenhum item no orçamento para imprimir.");
+                return;
+            }
+
+            let conteudoImpressao = '';
+
+            // Cria o conteúdo formatado do orçamento
+            conteudoImpressao += '<h1>Orçamento</h1>';
+
+            // Adiciona os itens do orçamento
+            orcamento.itens.forEach(function (item) {
+                conteudoImpressao += '<p>';
+                conteudoImpressao += 'Tipo do Tijolo: ' + item.item + '<br>';
+                conteudoImpressao += 'Quantidade: ' + orcamento.formatarQuantidade(item.quantidade) + '<br>';
+                conteudoImpressao += 'Preço: ' + orcamento.formatarValor(item.preco) + '<br>';
+                conteudoImpressao += 'Total: ' + orcamento.formatarValor(item.total) + '<br>';
+                conteudoImpressao += '</p>';
+            });
+
+            // Adiciona o total do orçamento
+            conteudoImpressao += '<p>';
+            conteudoImpressao += 'Total do Orçamento em reais: ' + orcamento.formatarValor(orcamento.calcularTotal()) + '<br>';
+            conteudoImpressao += '</p>';
+
+            // Cria uma nova janela ou aba com o conteúdo formatado do orçamento
+            let janelaImpressao = window.open('', 'orçamento');
+            janelaImpressao.document.open();
+            janelaImpressao.document.write(conteudoImpressao);
+            janelaImpressao.document.close();
+
+            // Imprime a nova janela ou aba
+            janelaImpressao.print();
+        }
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/Relatorio.css">
+</head>
+
+<body>
+    <a href="dashboard.html"><button onclick="goBack()" class="voltar">Voltar</button></a>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                Adicionar Dados
+            </div>
+            <form id="dadosForm">
+                <label for="dataInput">Data:</label>
+                <input type="date" id="dataInput" required>
+
+                <label for="Quantia">Quantia:</label>
+                <input type="text" id="QuantiaInput" required>
+
+                <label for="Produtivo">Produtivos:</label>
+                <input type="text" id="ProdutivoInput" required>
+
+                <label for="Danificados">Danificados:</label>
+                <input type="text" id="DanificadosInput" required>
+                <button type="submit" id="btnSubmit">Adicionar</button>
+            </form>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                Relatório Diário
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Quantidade de tijolos</th>
+                        <th>Estoque</th>
+                        <th>Danificados</th>
+                    </tr>
+                </thead>
+                <tbody id="diarioTableBody">
+                </tbody>
+            </table>
+            <button onclick="downloadDiario()" class="btn-download">Download Diário</button>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                Relatório Mensal
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mês</th>
+                        <th>Quantidade de tijolos</th>
+                        <th>Estoque</th>
+                        <th>Danificados</th>
+                    </tr>
+                </thead>
+                <tbody id="mensalTableBody">
+                </tbody>
+            </table>
+            <button onclick="downloadMensal()" class="btn-download">Download Mensal</button>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('dadosForm');
+        const diarioTableBody = document.getElementById('diarioTableBody');
+        const mensalTableBody = document.getElementById('mensalTableBody');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const data = document.getElementById('dataInput').value;
+            const Quantia = document.getElementById('QuantiaInput').value;
+            const Produtivo = document.getElementById('ProdutivoInput').value;
+            const Danificado = document.getElementById('DanificadosInput').value;
+
+            const newRowDiario = document.createElement('tr');
+            newRowDiario.innerHTML = `
+            <td>${data}</td>
+            <td>${Quantia}</td>
+            <td>${Produtivo}</td>
+            <td>${Danificado}</td>
+          `;
+            diarioTableBody.appendChild(newRowDiario);
+
+            const newRowMensal = document.createElement('tr');
+            newRowMensal.innerHTML = `
+            <td>${getMonthName(data)}</td>
+            <td>${Quantia}</td>
+            <td>${Produtivo}</td>
+            <td>${Danificado}</td>
+          `;
+            mensalTableBody.appendChild(newRowMensal);
+
+            document.getElementById('dataInput').value = '';
+            document.getElementById('QuantiaInput').value = '';
+            document.getElementById('ProdutivoInput').value = '';
+            document.getElementById('DanificadosInput').value = '';
+        });
+
+        function getMonthName(dateString) {
+            const [year, month, day] = dateString.split('-');
+            const date = new Date(year, month - 1, day);
+            const options = { month: 'long', year: 'numeric' };
+            return date.toLocaleDateString('pt-BR', options);
+        }
+
+        function downloadDiario() {
+            const table = document.querySelector('#diarioTableBody').outerHTML;
+            const filename = 'relatorio_diario.html';
+            downloadTableAsHTML(table, filename);
+        }
+
+        function downloadMensal() {
+            const table = document.querySelector('#mensalTableBody').outerHTML;
+            const filename = 'relatorio_mensal.html';
+            downloadTableAsHTML(table, filename);
+        }
+
+        function downloadTableAsHTML(table, filename) {
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(table));
+            element.setAttribute('download', filename);
+
+            element.style.display = 'none';
+            document.body.appendChild(element);
+
+            element.click();
+
+            document.body.removeChild(element);
+        }
+    </script>
+
+
+
+</body>
+
+</html>

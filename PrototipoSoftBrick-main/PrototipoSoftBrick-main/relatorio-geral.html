@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style-relatorio-geral.css">
+  <title>Relatório Geral</title>
+</head>
+<body>
+  <h1>Relatório geral</h1>
+  <div class="card-btn">
+    <button onclick="showProductionChart()">Produção</button>
+    <button onclick="showDamageChart()">Danificados</button>
+    <button onclick="showSalesChart()">Vendas</button>
+    <button onclick="showFinanceChart()">Financeiro</button>
+    <button onclick="showInventoryChart()">Estoque</button>
+    <a href="dashboard.html"><button style="color: #ffff;">
+    Voltar</button></a>
+  </div>
+    <div id="chartContainer" class="chart"></div>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="JS/relatorio.js"></script>
+</body>
+</html>
